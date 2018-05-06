@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>排班系统</title>
+    <script src="https://cdn.bootcss.com/jquery/2.1.2/jquery.min.js"></script>
+    <script src="js.js"></script>
+    <style>
+        table {
+            width: 100%;
+            table-layout: fixed;
+            text-align: center;
+        }
+
+        thead {
+            width: 100%;
+        }
+
+        tr {
+            width: 100%;
+            height: 50px;
+        }
+
+        th {
+            border: 1px solid #000000;
+            word-break: break-word;
+        }
+
+        td {
+            border: 1px solid #000000;
+            word-break: break-word;
+        }
+
+        table input {
+            width: 70%;
+        }
+    </style>
+</head>
+<body>
+<h2>排班系统</h2>
+<p>注：每人每周3班+4班<=3</p>
+<br>
+<div>请输入总人数: <input type="number">
+    <button>确定总人数</button>
+</div>
+<div>总人数为: <span>--</span></div>
+<br>
+<div>请输入最后一天的夜2班人: <input type="number">
+    <button>确定最后一天的夜2班人</button>
+</div>
+<br>
+<div>请输入休息剩余人: <input type="number">
+    <button>确定休息剩余人</button>
+</div>
+<br>
+<form>
+    <table id="table1" cellpadding="0" cellspacing="0">
+        <thead>
+        <tr>
+            <th></th>
+            <th>正0</th>
+            <th>正2</th>
+            <th>夜1</th>
+            <th>夜2</th>
+            <th>休息</th>
+        </thead>
+        <tbody>
+        <tr>
+            <td>周一</td>
+            <td><input type="text" name="1_1"></td>
+            <td><input type="text" name="1_2"></td>
+            <td><input type="text" name="1_3"></td>
+            <td><input type="text" name="1_4"></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>周二</td>
+            <td><input type="text" name="2_1"></td>
+            <td><input type="text" name="2_2"></td>
+            <td><input type="text" name="2_3"></td>
+            <td><input type="text" name="2_4"></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>周三</td>
+            <td><input type="text" name="3_1"></td>
+            <td><input type="text" name="3_2"></td>
+            <td><input type="text" name="3_3"></td>
+            <td><input type="text" name="3_4"></td>
+            <td></td>
+
+        </tr>
+        <tr>
+            <td>周四</td>
+            <td><input type="text" name="4_1"></td>
+            <td><input type="text" name="4_2"></td>
+            <td><input type="text" name="4_3"></td>
+            <td><input type="text" name="4_4"></td>
+            <td></td>
+
+        </tr>
+        <tr>
+            <td>周五</td>
+            <td><input type="text" name="5_1"></td>
+            <td><input type="text" name="5_2"></td>
+            <td><input type="text" name="5_3"></td>
+            <td><input type="text" name="5_4"></td>
+            <td></td>
+
+        </tr>
+        <tr>
+            <td>周六</td>
+            <td><input type="text" name="6_1"></td>
+            <td><input type="text" name="6_2"></td>
+            <td><input type="text" name="6_3"></td>
+            <td><input type="text" name="6_4"></td>
+            <td></td>
+
+        </tr>
+        <tr>
+            <td>周日</td>
+            <td><input type="text" name="7_1"></td>
+            <td><input type="text" name="7_2"></td>
+            <td><input type="text" name="7_3"></td>
+            <td><input type="text" name="7_4"></td>
+            <td></td>
+
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <br>
+    <div style="text-align: center;">
+        <button type="submit">确定这样排班</button>
+    </div>
+</form>
+<script>
+    var arr1 = [4, 5, 9, 9, 6, 8, 7, 5];
+    arr1 = numSplit(arr1);
+
+    var peopleTotal = 30;//总人数
+    var peopleTotalArr = [];
+    //生成总人数序列
+    for (let i = 1; i <= peopleTotal; i++) {
+        peopleTotalArr[i - 1] = i;
+    }
+
+    let tArr3 = [];//每次夜2班的人
+    let y12Arr = [];//所有上夜班的人记录
+    for (let i = 0; i < arr1.length; i++) {
+        let _peopleTotalArr = [...peopleTotalArr];
+        let _peopleTotalArr2 = [...peopleTotalArr];
+        let _peopleTotalArr3 = [...peopleTotalArr];
+        for (let j = 0; j < arr1[i].length; j++) {
+            if (i == 0) {
+                //如果是第一天
+                let a = getArrayItems(_peopleTotalArr, arr1[i][j]);
+                console.log(a);
+                if (j == 3) {
+                    console.log(_peopleTotalArr);
+                    tArr3 = [...a];
+                }
+                if (j == 2 || j == 3) {
+                    y12Arr = [...y12Arr, ...a];
+                }
+            } else {
+                //如果不是第一天，上一个夜2班的人不安排到正0班里
+                let aa = [];
+                if (j == 0) {
+                    let y2 = [...tArr3];//上一个夜2班的人
+                    //移除上一个夜2班的人
+                    for (let x = 0; x < y2.length; x++) {
+                        _peopleTotalArr2.remove(y2[x]);
+                    }
+
+                    (function () {
+                        let result = [];
+                        for (let k = 0; k < arr1[i][j]; k++) {
+                            let ran = Math.floor(Math.random() * _peopleTotalArr2.length);
+                            if (arrValNum3(y12Arr,ran)){
+                                result.push(_peopleTotalArr2.splice(ran, 1)[0]);
+                            }else{
+                                // TODO
+                            }
+                        }
+                        return result;
+                    })();
+
+                    aa = getArrayItems(_peopleTotalArr2, arr1[i][j]);
+                    console.log(aa);
+                    for (let y = 0; y < aa.length; y++) {
+                        _peopleTotalArr3.remove(aa[y]);
+                    }
+                } else {
+                    aa = getArrayItems(_peopleTotalArr3, arr1[i][j]);
+                    console.log(aa);
+                    if (j == 3) {
+                        console.log(_peopleTotalArr3);
+                    }
+                }
+                if (j == 2 || j == 3) {
+                    y12Arr = [...y12Arr, ...aa];
+                }
+            }
+
+        }
+    }
+    console.log(y12Arr);
+
+
+    $('form').submit(function () {
+        alert($(this).serialize());
+        return false;
+    });
+
+</script>
+
+<br>
+<br>
+<table id="table2" cellpadding="0" cellspacing="0">
+    <thead>
+    <tr>
+        <th></th>
+        <th>正0</th>
+        <th>正2</th>
+        <th>夜1</th>
+        <th>夜2</th>
+        <th>休息</th>
+    </thead>
+    <tbody>
+    <tr>
+        <td>周一</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>周二</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>周三</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+
+    </tr>
+    <tr>
+        <td>周四</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+
+    </tr>
+    <tr>
+        <td>周五</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+
+    </tr>
+    <tr>
+        <td>周六</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+
+    </tr>
+    <tr>
+        <td>周日</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+
+    </tr>
+    </tbody>
+</table>
+<br>
+<br>
+<div>最后一天的夜2班人为：</div>
+<div>休息剩余人为：</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+</body>
+</html>
