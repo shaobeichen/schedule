@@ -222,12 +222,12 @@
     let serializeVal;
     $('#ok').click(function () {
         var arr1 = [];
-        // serializeVal = $("form").serialize();
-        // let serializeArr = serializeVal.split('&');
-        // for (let i = 0; i < serializeArr.length; i++) {
-        //     arr1.push(serializeArr[i].split('=')[1]);
-        // }
-        arr1 = [4, 5, 9, 9, 6, 8, 7, 5, 5, 7, 8, 6, 9, 9, 5, 4, 3, 9, 8, 7, 8, 7, 3, 9, 5, 5, 9, 7];
+        serializeVal = $("form").serialize();
+        let serializeArr = serializeVal.split('&');
+        for (let i = 0; i < serializeArr.length; i++) {
+            arr1.push(serializeArr[i].split('=')[1]);
+        }
+        // arr1 = [4, 5, 9, 9, 6, 8, 7, 5, 5, 7, 8, 6, 9, 9, 5, 4, 3, 9, 8, 7, 8, 7, 3, 9, 5, 5, 9, 7];
         calculate(arr1);
     });
 
