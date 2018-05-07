@@ -78,7 +78,7 @@ function deepClone(obj) {
 }
 
 /**
- * 查看值在数组中出现的次数是否超过2次
+ * 查看值在数组中出现的次数是否超过3次
  * @param arr
  * @param val
  */
@@ -89,7 +89,7 @@ function arrValNum3(arr, val) {
             count++;
         }
     }
-    if (count <= 2) {
+    if (count >= 3) {
         return true;
     } else {
         return false;
