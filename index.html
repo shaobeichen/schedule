@@ -40,17 +40,12 @@
 <!--<h2>排班系统</h2>-->
 <p>注：每人每周3班+4班<=3</p>
 <br>
-<div>请输入总人数: <input type="number">
-    <button>确定总人数</button>
+<div>请输入总人数: <input type="number" id="peopleTotal">
 </div>
-<div>总人数为: <span>--</span></div>
-<br>
-<div>请输入最后一天的夜2班人: <input type="number">
-    <button>确定最后一天的夜2班人</button>
+<div>请输入最后一天的夜2班人: <input type="text" id="endPeople">
 </div>
 <br>
 <div>请输入休息剩余人: <input type="number">
-    <button>确定休息剩余人</button>
 </div>
 <br>
 <form>
@@ -228,13 +223,19 @@
             arr1.push(serializeArr[i].split('=')[1]);
         }
         // arr1 = [4, 5, 9, 9, 6, 8, 7, 5, 5, 7, 8, 6, 9, 9, 5, 4, 3, 9, 8, 7, 8, 7, 3, 9, 5, 5, 9, 7];
-        calculate(arr1);
+        let peopleTotal = $('#peopleTotal').val();
+        let endPeople = $('#endPeople').val();
+        calculate(peopleTotal, arr1, endPeople);
     });
 
-    function calculate(arr1) {
+    /**
+     * 排班计算类
+     * @param peopleTotal 总人数
+     * @param arr1 表单计算出的人数数组
+     * @param end 最后一天的夜2班人
+     */
+    function calculate(peopleTotal, arr1, end) {
         arr1 = numSplit(arr1);
-
-        var peopleTotal = 30;//总人数
         var peopleTotalArr = [];
         //生成总人数序列
         for (let i = 1; i <= peopleTotal; i++) {
@@ -249,10 +250,21 @@
             let _peopleTotalArr = [...peopleTotalArr];
             let _peopleTotalArr2 = [...peopleTotalArr];
             let _peopleTotalArr3 = [...peopleTotalArr];
+            let _peopleTotalArr4 = [...peopleTotalArr];
             for (let j = 0; j < arr1[i].length; j++) {
                 if (i == 0) {
                     //如果是第一天
-                    let a = getArrayItems(_peopleTotalArr, arr1[i][j]);
+                    let a;
+                    if (!end) {
+                        a = getArrayItems(_peopleTotalArr, arr1[i][j]);
+                    } else {
+                        let endArr = end.split(',');
+                        for (let x = 0; x < endArr.length; x++) {
+                            _peopleTotalArr4.remove(endArr[x]);
+                        }
+                        a = getArrayItems(_peopleTotalArr4, arr1[i][j]);
+
+                    }
                     let html = $('#table2 tbody').find('tr').eq(i).find('td').eq(j + 1).html();
                     if (html) {
                         $('#table2 tbody').find('tr').eq(i).find('td').eq(j + 1).html(`${html},${a}`);
