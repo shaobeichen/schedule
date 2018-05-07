@@ -221,14 +221,17 @@
     let serializeVal;
     $('#ok').click(function () {
         var arr1 = [];
-        serializeVal = $("form").serialize();
-        let serializeArr = serializeVal.split('&');
-        for (let i = 0; i < serializeArr.length; i++) {
-            arr1.push(serializeArr[i].split('=')[1]);
-        }
-        // arr1 = [4, 5, 9, 9, 6, 8, 7, 5, 5, 7, 8, 6, 9, 9, 5, 4, 3, 9, 8, 7, 8, 7, 3, 9, 5, 5, 9, 7];
-        let peopleTotal = $('#peopleTotal').val();
-        let endPeople = $('#endPeople').val();
+        // serializeVal = $("form").serialize();
+        // let serializeArr = serializeVal.split('&');
+        // for (let i = 0; i < serializeArr.length; i++) {
+        //     arr1.push(serializeArr[i].split('=')[1]);
+        // }
+        // let peopleTotal = $('#peopleTotal').val();
+        // let endPeople = $('#endPeople').val();
+        arr1 = [4, 5, 9, 9, 6, 8, 7, 5, 5, 7, 8, 6, 9, 9, 5, 4, 3, 9, 8, 7, 8, 7, 3, 9, 5, 5, 9, 7];
+        let peopleTotal = 30;
+        let endPeople = '1,2,7,10,13,14,15,20,24';
+
         calculate(peopleTotal, arr1, endPeople);
     });
 
@@ -250,28 +253,34 @@
         let tArr3 = [];//每次夜2班的人
         let y12Arr = [];//所有上夜班的人记录
         let y12ArrTemp = [];//所有上夜班的人记录临时变量
+        let endArr = end.split(',');
+        let _peopleTotalArr4 = [...peopleTotalArr];//用作排除掉上周夜2班的人，剩下的人用来排第一天的正0
+        for (let x = 0; x < endArr.length; x++) {
+            endArr[x] = parseInt(endArr[x]);
+        }
+        for (let x = 0; x < endArr.length; x++) {
+            _peopleTotalArr4.remove(endArr[x]);
+        }
         for (let i = 0; i < arr1.length; i++) {
             let _peopleTotalArr = [...peopleTotalArr];
             let _peopleTotalArr2 = [...peopleTotalArr];
             let _peopleTotalArr3 = [...peopleTotalArr];
-            let _peopleTotalArr4 = [...peopleTotalArr];
             for (let j = 0; j < arr1[i].length; j++) {
                 if (i == 0) {
                     //如果是第一天
                     let a;
-                    //如果没填上周最后一天夜2班的人
-                    if (end && j == 0) {
-                        let endArr = end.split(',');
-                        for (let x = 0; x < endArr.length; x++) {
-                            _peopleTotalArr4.remove(endArr[x]);
+                    //如果填了上周最后一天夜2班的人
+                    if (end) {
+                        if (j == 0) {
+                            a = getArrayItems(_peopleTotalArr4, arr1[i][j]);
+                            for (let x = 0; x < a.length; x++) {
+                                _peopleTotalArr.remove(a[x]);
+                            }
+                        } else {
+                            a = getArrayItems(_peopleTotalArr, arr1[i][j]);
                         }
-                        a = getArrayItems(_peopleTotalArr4, arr1[i][j]);
-                        for (let y = 0; y < a.length; y++) {
-                            _peopleTotalArr.remove(a[y]);
-                        }
-                    } else {
-                        a = getArrayItems(_peopleTotalArr, arr1[i][j]);
                     }
+
                     let html = $('#table2 tbody').find('tr').eq(i).find('td').eq(j + 1).html();
                     if (html) {
                         $('#table2 tbody').find('tr').eq(i).find('td').eq(j + 1).html(`${html},${a}`);
@@ -376,7 +385,6 @@
 
             }
         }
-        console.log(y12Arr);
     }
 
 
