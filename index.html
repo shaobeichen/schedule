@@ -6,6 +6,15 @@
     <script src="https://cdn.bootcss.com/jquery/2.1.2/jquery.min.js"></script>
     <script src="js.js"></script>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            padding: 60px;
+        }
+
         table {
             width: 100%;
             table-layout: fixed;
@@ -34,106 +43,154 @@
         table input {
             width: 70%;
         }
+
+        label {
+            display: inline-block;
+            width: 15%;
+            text-align: right;
+            margin-right: 20px;
+        }
+
+        input {
+            width: 70%;
+            height: 30px;
+            line-height: 30px;
+            padding: 0 10px;
+        }
+
+        button {
+            margin-left: calc(15% + 25px);
+            background: #8a8a8a;
+            border: 0;
+            color: #ffffff;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #6e6e6e;
+            cursor: pointer;
+        }
+
+        h4, li {
+            margin-left: calc(15% + 25px);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
     </style>
 </head>
 <body>
 <!--<h2>排班系统</h2>-->
-<p>注：系统会自动将每人每周3班+4班次数<=3</p>
+<h4>系统注明：</h4>
+<ul>
+    <li>系统会自动将每人每周3班+4班次数<=3</li>
+    <li>夜2班的人员不会安排到正0里面</li>
+    <li>前一天休息的人会优先安排到下一天的正0班</li>
+</ul>
 <br>
-<div>请输入总人数:
+<div>
+    <label for="peopleTotal">请输入总人数:</label>
     <input type="number" id="peopleTotal">
 </div>
 <br>
-<div>请输入最后一天的夜2班人:
+<div>
+    <label for="endPeople">请输入最后一天的夜2班人:</label>
     <input type="text" id="endPeople">
 </div>
 <br>
+<div>
+    <label for="peopleCount">请输入排班数量:</label>
+    <input type="text" id="peopleCount" placeholder="每天输入4个，总共输入28个，用英文逗号隔开，最后不用加逗号，为了防止你想重新排班的时候又要重新输入">
+</div>
+<br>
+<button id="ok" type="button">确定这样排班</button>
+
 <!--<div>请输入休息剩余人:-->
 <!--<input type="number">-->
 <!--</div>-->
 <br>
-<form>
-    <table id="table1" cellpadding="0" cellspacing="0">
-        <thead>
-        <tr>
-            <th></th>
-            <th>正0</th>
-            <th>正2</th>
-            <th>夜1</th>
-            <th>夜2</th>
-            <th>休息</th>
-        </thead>
-        <tbody>
-        <tr>
-            <td>周一</td>
-            <td><input type="text" name="1_1"></td>
-            <td><input type="text" name="1_2"></td>
-            <td><input type="text" name="1_3"></td>
-            <td><input type="text" name="1_4"></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>周二</td>
-            <td><input type="text" name="2_1"></td>
-            <td><input type="text" name="2_2"></td>
-            <td><input type="text" name="2_3"></td>
-            <td><input type="text" name="2_4"></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>周三</td>
-            <td><input type="text" name="3_1"></td>
-            <td><input type="text" name="3_2"></td>
-            <td><input type="text" name="3_3"></td>
-            <td><input type="text" name="3_4"></td>
-            <td></td>
+<!--<form>-->
+<!--<table id="table1" cellpadding="0" cellspacing="0">-->
+<!--<thead>-->
+<!--<tr>-->
+<!--<th></th>-->
+<!--<th>正0</th>-->
+<!--<th>正2</th>-->
+<!--<th>夜1</th>-->
+<!--<th>夜2</th>-->
+<!--<th>休息</th>-->
+<!--</thead>-->
+<!--<tbody>-->
+<!--<tr>-->
+<!--<td>周一</td>-->
+<!--<td><input type="text" name="1_1"></td>-->
+<!--<td><input type="text" name="1_2"></td>-->
+<!--<td><input type="text" name="1_3"></td>-->
+<!--<td><input type="text" name="1_4"></td>-->
+<!--<td></td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>周二</td>-->
+<!--<td><input type="text" name="2_1"></td>-->
+<!--<td><input type="text" name="2_2"></td>-->
+<!--<td><input type="text" name="2_3"></td>-->
+<!--<td><input type="text" name="2_4"></td>-->
+<!--<td></td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>周三</td>-->
+<!--<td><input type="text" name="3_1"></td>-->
+<!--<td><input type="text" name="3_2"></td>-->
+<!--<td><input type="text" name="3_3"></td>-->
+<!--<td><input type="text" name="3_4"></td>-->
+<!--<td></td>-->
 
-        </tr>
-        <tr>
-            <td>周四</td>
-            <td><input type="text" name="4_1"></td>
-            <td><input type="text" name="4_2"></td>
-            <td><input type="text" name="4_3"></td>
-            <td><input type="text" name="4_4"></td>
-            <td></td>
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>周四</td>-->
+<!--<td><input type="text" name="4_1"></td>-->
+<!--<td><input type="text" name="4_2"></td>-->
+<!--<td><input type="text" name="4_3"></td>-->
+<!--<td><input type="text" name="4_4"></td>-->
+<!--<td></td>-->
 
-        </tr>
-        <tr>
-            <td>周五</td>
-            <td><input type="text" name="5_1"></td>
-            <td><input type="text" name="5_2"></td>
-            <td><input type="text" name="5_3"></td>
-            <td><input type="text" name="5_4"></td>
-            <td></td>
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>周五</td>-->
+<!--<td><input type="text" name="5_1"></td>-->
+<!--<td><input type="text" name="5_2"></td>-->
+<!--<td><input type="text" name="5_3"></td>-->
+<!--<td><input type="text" name="5_4"></td>-->
+<!--<td></td>-->
 
-        </tr>
-        <tr>
-            <td>周六</td>
-            <td><input type="text" name="6_1"></td>
-            <td><input type="text" name="6_2"></td>
-            <td><input type="text" name="6_3"></td>
-            <td><input type="text" name="6_4"></td>
-            <td></td>
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>周六</td>-->
+<!--<td><input type="text" name="6_1"></td>-->
+<!--<td><input type="text" name="6_2"></td>-->
+<!--<td><input type="text" name="6_3"></td>-->
+<!--<td><input type="text" name="6_4"></td>-->
+<!--<td></td>-->
 
-        </tr>
-        <tr>
-            <td>周日</td>
-            <td><input type="text" name="7_1"></td>
-            <td><input type="text" name="7_2"></td>
-            <td><input type="text" name="7_3"></td>
-            <td><input type="text" name="7_4"></td>
-            <td></td>
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>周日</td>-->
+<!--<td><input type="text" name="7_1"></td>-->
+<!--<td><input type="text" name="7_2"></td>-->
+<!--<td><input type="text" name="7_3"></td>-->
+<!--<td><input type="text" name="7_4"></td>-->
+<!--<td></td>-->
 
-        </tr>
-        </tbody>
-    </table>
-    <br>
-    <br>
+<!--</tr>-->
+<!--</tbody>-->
+<!--</table>-->
+<!--<br>-->
+<!--<br>-->
 
-</form>
-<div style="text-align: center;">
-    <button id="ok" type="button">确定这样排班</button>
-</div>
+<!--</form>-->
 
 
 <br>
@@ -229,7 +286,7 @@
 <script>
     let serializeVal;
     $('#ok').click(function () {
-        var arr1 = [];
+
         // serializeVal = $("form").serialize();
         // let serializeArr = serializeVal.split('&');
         // for (let i = 0; i < serializeArr.length; i++) {
@@ -237,10 +294,21 @@
         // }
         // let peopleTotal = $('#peopleTotal').val();
         // let endPeople = $('#endPeople').val();
-        arr1 = [8, 4, 4, 8, 9, 5, 4, 10, 9, 5, 4, 10, 9, 5, 4, 10, 8, 5, 3, 9, 8, 4, 3, 9, 8, 4, 3, 9];
-        let peopleTotal = 30;
-        let endPeople = '1,2,7,10,13,14,15,20,24';
 
+        var arr1 = [];
+        let peopleTotal;
+        let endPeople;
+
+        // let serializeArr = $('#peopleCount').split(',');
+        // for (let i = 0; i < serializeArr.length; i++) {
+        //     arr1.push(serializeArr[i].split('=')[1]);
+        // }
+        // peopleTotal = $('#peopleTotal').val();
+        // endPeople = $('#endPeople').val();
+
+        arr1 = [8, 4, 4, 8, 9, 5, 4, 10, 9, 5, 4, 10, 9, 5, 4, 10, 8, 5, 3, 9, 8, 4, 3, 9, 8, 4, 3, 9];
+        peopleTotal = 30;
+        endPeople = '1,2,7,10,13,14,15,20,24';
         calculate(peopleTotal, arr1, endPeople);
     });
 
