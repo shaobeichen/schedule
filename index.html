@@ -295,17 +295,15 @@
         // let peopleTotal = $('#peopleTotal').val();
         // let endPeople = $('#endPeople').val();
 
-        var arr1 = [];
-        let peopleTotal;
-        let endPeople;
-
         // let serializeArr = $('#peopleCount').split(',');
         // for (let i = 0; i < serializeArr.length; i++) {
         //     arr1.push(serializeArr[i].split('=')[1]);
         // }
         // peopleTotal = $('#peopleTotal').val();
         // endPeople = $('#endPeople').val();
-
+        var arr1 = [];
+        let peopleTotal;
+        let endPeople;
         arr1 = [8, 4, 4, 8, 9, 5, 4, 10, 9, 5, 4, 10, 9, 5, 4, 10, 8, 5, 3, 9, 8, 4, 3, 9, 8, 4, 3, 9];
         peopleTotal = 30;
         endPeople = '1,2,7,10,13,14,15,20,24';
@@ -332,9 +330,9 @@
         let y12ArrTemp = [];//所有上夜班的人记录临时变量
         let xxArrTemp = [];//休息人临时数组
         let xxArr = [];//休息人数组
-
-        let endArr = end.split(',');
+        let endArr = end.split(',');//最后一天的夜2班人数组
         let _peopleTotalArr4 = [...peopleTotalArr];//用作排除掉上周夜2班的人，剩下的人用来排第一天的正0
+
         for (let x = 0; x < endArr.length; x++) {
             endArr[x] = parseInt(endArr[x]);
         }
@@ -361,14 +359,15 @@
                             a = getArrayItems(_peopleTotalArr, arr1[i][j]);
                         }
                     }
-
+                    //把生成的人填到表格里面去
                     let html = $('#table2 tbody').find('tr').eq(i).find('td').eq(j + 1).html();
                     if (html) {
                         $('#table2 tbody').find('tr').eq(i).find('td').eq(j + 1).html(`${html},${a}`);
                     } else {
                         $('#table2 tbody').find('tr').eq(i).find('td').eq(j + 1).html(`${a}`);
                     }
-                    console.log(a);
+                    //console.log(a);
+                    //如果是第一天的夜2班，将剩下的人填到表格里去
                     if (j == 3) {
                         let html = $('#table2 tbody').find('tr').eq(i).find('td').eq(5).html();
                         if (html) {
@@ -376,12 +375,12 @@
                         } else {
                             $('#table2 tbody').find('tr').eq(i).find('td').eq(5).html(`${_peopleTotalArr}`);
                         }
-                        console.log(_peopleTotalArr);
-                        tArr3 = [...a];
-                        xxArrTemp = [..._peopleTotalArr];
-                        xxArr = [..._peopleTotalArr];
+                        //console.log(_peopleTotalArr);
+                        tArr3 = [...a];//将每次夜2班的人填到数组中，用来在后一天判断不分配到正0里面去
+                        xxArrTemp = [..._peopleTotalArr];//休息人临时数组，用来每天的分配，存上一天的休息人，然后分配到下一天去
+                        xxArr = [..._peopleTotalArr];//休息人总数组，用来记录已经休息的人，保证每个人都是至少休息一次
                     }
-                    if (j == 2 || j == 3) {
+                    if (j == 2 || j == 3) {//记录所有上夜班的人
                         y12ArrTemp = [...y12Arr, ...a];
                         y12Arr = [];
                         y12Arr = [...y12ArrTemp];
@@ -395,83 +394,50 @@
                         let y2 = [...tArr3];//上一个夜2班的人
                         //移除上一个夜2班的人
 
-                        if (xxArrTemp.length) {
-                            //如果是上一天休息的人
+                        if (arr1[i][j] >= xxArrTemp.length) {//如果今天这个班需要的人数大于前一天休息的人数，那么就直接把休息人分配进去就行了，反之往下一个班分配
+                            for (let k = 0; k < xxArrTemp.length; k++) {
+                                aa.push(xxArrTemp[k]);
+                            }
+                            xxArrTemp = [];//分配完了，不用一个一个删除，直接清空就好
 
-                            if (arr1[i][j] >= xxArrTemp.length) {
-                                for (let k = 0; k < xxArrTemp.length; k++) {
-                                    aa.push(xxArrTemp[k]);
-                                }
-                                xxArrTemp = [];
-
-                                //去除掉上夜2班的人
-                                for (let x = 0; x < y2.length; x++) {
-                                    _peopleTotalArr5.remove(y2[x]);
-                                }
-                                //去除掉已经分配的人
-                                for (let x = 0; x < aa.length; x++) {
-                                    _peopleTotalArr5.remove(aa[x]);
-                                }
-
-                                if (xxArr.length >= peopleTotal) {
-                                    xxArr = [];
-                                    aa = getArrayItems(_peopleTotalArr5, arr1[i][j] - aa.length);
-                                } else {
-                                    for (let k = 0; k < (arr1[i][j] - aa.length); k++) {
-                                        let ran = Math.floor(Math.random() * _peopleTotalArr5.length);
-                                        let ranVal = _peopleTotalArr5[ran];
-                                        while (isInArray(xxArr, ranVal)) {
-                                            ran = Math.floor(Math.random() * _peopleTotalArr5.length);
-                                            ranVal = _peopleTotalArr5[ran];
-                                        }
-                                        aa.push(_peopleTotalArr5.splice(ran, 1)[0]);
-                                    }
-                                }
-                            } else {
-                                for (let k = 0; k < arr1[i][j]; k++) {
-                                    aa.push(xxArrTemp[k]);
-                                }
-
-                                for (let k = 0; k < arr1[i][j]; k++) {
-                                    xxArrTemp.remove(aa[k]);
-                                }
+                            //去除掉上夜2班的人
+                            for (let x = 0; x < y2.length; x++) {
+                                _peopleTotalArr5.remove(y2[x]);
+                            }
+                            //去除掉已经分配的人
+                            for (let x = 0; x < aa.length; x++) {
+                                _peopleTotalArr5.remove(aa[x]);
                             }
 
-                            let html = $('#table2 tbody').find('tr').eq(i).find('td').eq(j + 1).html();
-                            if (html) {
-                                $('#table2 tbody').find('tr').eq(i).find('td').eq(j + 1).html(`${html},${aa}`);
-                            } else {
-                                $('#table2 tbody').find('tr').eq(i).find('td').eq(j + 1).html(`${aa}`);
-                            }
-                            console.log(aa);
-                            for (let y = 0; y < aa.length; y++) {
-                                _peopleTotalArr3.remove(aa[y]);
+                            // TODO 这里其实是有逻辑bug的,如果分配完后，超过了总人数，那里面肯定就会有休息两次的人
+                            for (let k = 0; k < (arr1[i][j] - aa.length); k++) {
+                                let ran = Math.floor(Math.random() * _peopleTotalArr5.length);
+                                let ranVal = _peopleTotalArr5[ran];
+                                while (isInArray(xxArr, ranVal)) {
+                                    ran = Math.floor(Math.random() * _peopleTotalArr5.length);
+                                    ranVal = _peopleTotalArr5[ran];
+                                }
+                                aa.push(_peopleTotalArr5.splice(ran, 1)[0]);
                             }
                         } else {
-                            for (let x = 0; x < y2.length; x++) {
-                                _peopleTotalArr2.remove(y2[x]);
-                            }
-                            //夜1加夜2不能超过3次
                             for (let k = 0; k < arr1[i][j]; k++) {
-                                let ran = Math.floor(Math.random() * _peopleTotalArr2.length);
-                                let ranVal = _peopleTotalArr2[ran];
-                                while (arrValNum3(y12Arr, ranVal)) {
-                                    ran = Math.floor(Math.random() * _peopleTotalArr2.length);
-                                    ranVal = _peopleTotalArr2[ran];
-                                }
-                                aa.push(_peopleTotalArr2.splice(ran, 1)[0]);
+                                aa.push(xxArrTemp[k]);
                             }
-                            // aa = getArrayItems(_peopleTotalArr2, arr1[i][j]);
-                            let html = $('#table2 tbody').find('tr').eq(i).find('td').eq(j + 1).html();
-                            if (html) {
-                                $('#table2 tbody').find('tr').eq(i).find('td').eq(j + 1).html(`${html},${aa}`);
-                            } else {
-                                $('#table2 tbody').find('tr').eq(i).find('td').eq(j + 1).html(`${aa}`);
+
+                            for (let k = 0; k < arr1[i][j]; k++) {
+                                xxArrTemp.remove(aa[k]);
                             }
-                            console.log(aa);
-                            for (let y = 0; y < aa.length; y++) {
-                                _peopleTotalArr3.remove(aa[y]);
-                            }
+                        }
+
+                        let html = $('#table2 tbody').find('tr').eq(i).find('td').eq(j + 1).html();
+                        if (html) {
+                            $('#table2 tbody').find('tr').eq(i).find('td').eq(j + 1).html(`${html},${aa}`);
+                        } else {
+                            $('#table2 tbody').find('tr').eq(i).find('td').eq(j + 1).html(`${aa}`);
+                        }
+                        //console.log(aa);
+                        for (let y = 0; y < aa.length; y++) {
+                            _peopleTotalArr3.remove(aa[y]);
                         }
 
                     } else {
@@ -487,6 +453,8 @@
                                     _peopleTotalArr3.remove(aa[x]);
                                 }
 
+
+                                // TODO
                                 if (xxArr.length >= peopleTotal) {
                                     xxArr = [];
                                     aa = getArrayItems(_peopleTotalArr3, arr1[i][j] - aa.length);
@@ -515,7 +483,7 @@
                                 $('#table2 tbody').find('tr').eq(i).find('td').eq(j + 1).html(`${aa}`);
                             }
 
-                            console.log(aa);
+                            //console.log(aa);
                             if (j == 3) {
                                 let html = $('#table2 tbody').find('tr').eq(i).find('td').eq(5).html();
                                 if (html) {
@@ -523,31 +491,13 @@
                                 } else {
                                     $('#table2 tbody').find('tr').eq(i).find('td').eq(5).html(`${_peopleTotalArr3}`);
                                 }
-                                console.log(_peopleTotalArr3);
+                                //console.log(_peopleTotalArr3);
                             }
-                            if (i == (arr1.length - 1)) {
-                                if (j == 3) {
-                                    tArr4 = aa;
-                                    let html2 = $('#tArr4').html();
-                                    if (html2) {
-                                        $('#tArr4').html(`${html2},${tArr4}`);
-                                    } else {
-                                        $('#tArr4').html(`${tArr4}`);
-                                    }
-                                }
-                            }
+
                         } else {
                             //夜1加夜2不能超过3次
-                            for (let h = 0; h < arr1[i][j]; h++) {
-                                let ran = Math.floor(Math.random() * _peopleTotalArr3.length);
-                                let ranVal = _peopleTotalArr3[ran];
-                                while (arrValNum3(y12Arr, ranVal)) {
-                                    ran = Math.floor(Math.random() * _peopleTotalArr3.length);
-                                    ranVal = _peopleTotalArr3[ran];
-                                }
-                                aa.push(_peopleTotalArr3.splice(ran, 1)[0]);
-                            }
-                            // aa = getArrayItems(_peopleTotalArr3, arr1[i][j]);
+                            yb(arr1[i][j], _peopleTotalArr3, aa, y12Arr);
+
                             let html = $('#table2 tbody').find('tr').eq(i).find('td').eq(j + 1).html();
                             if (html) {
                                 $('#table2 tbody').find('tr').eq(i).find('td').eq(j + 1).html(`${html},${aa}`);
@@ -555,7 +505,7 @@
                                 $('#table2 tbody').find('tr').eq(i).find('td').eq(j + 1).html(`${aa}`);
                             }
 
-                            console.log(aa);
+                            //console.log(aa);
                             if (j == 3) {
                                 let html = $('#table2 tbody').find('tr').eq(i).find('td').eq(5).html();
                                 if (html) {
@@ -563,24 +513,25 @@
                                 } else {
                                     $('#table2 tbody').find('tr').eq(i).find('td').eq(5).html(`${_peopleTotalArr3}`);
                                 }
-                                console.log(_peopleTotalArr3);
+                                //console.log(_peopleTotalArr3);
                             }
-                            if (i == (arr1.length - 1)) {
-                                if (j == 3) {
-                                    tArr4 = aa;
-                                    let html2 = $('#tArr4').html();
-                                    if (html2) {
-                                        $('#tArr4').html(`${html2},${tArr4}`);
-                                    } else {
-                                        $('#tArr4').html(`${tArr4}`);
-                                    }
+
+                        }
+
+                        if (i == (arr1.length - 1)) {//将最后一天的最后一个上夜2班的人找出来显示
+                            if (j == 3) {
+                                tArr4 = aa;
+                                let html2 = $('#tArr4').html();
+                                if (html2) {
+                                    $('#tArr4').html(`${html2},${tArr4}`);
+                                } else {
+                                    $('#tArr4').html(`${tArr4}`);
                                 }
                             }
                         }
 
-
                     }
-                    if (j == 2 || j == 3) {
+                    if (j == 2 || j == 3) {//如果是夜班，就把人添加到数组里面去
                         y12Arr = [...y12Arr, ...aa];
                         y12Arr = [];
                         y12Arr = [...y12ArrTemp];

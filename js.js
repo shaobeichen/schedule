@@ -15,9 +15,9 @@ function getArrayItems(arr, ranNum) {
  * @param {Object} arr 数组
  * @param {Object} value 元素值
  */
-function isInArray(arr,value){
-    for(var i = 0; i < arr.length; i++){
-        if(value === arr[i]){
+function isInArray(arr, value) {
+    for (var i = 0; i < arr.length; i++) {
+        if (value === arr[i]) {
             return true;
         }
     }
@@ -107,5 +107,24 @@ function arrValNum3(arr, val) {
         return true;
     } else {
         return false;
+    }
+}
+
+/**
+ * 除去夜班人上过3次的人然后分配到数组里
+ * @param num 循环几次，即arr1[i][j]
+ * @param arr 可以分配的人数组
+ * @param arrpush 需要分配到里面的数组
+ * @param y12Arr 夜班上过3次的人
+ */
+function yb(num, arr, arrpush, y12Arr) {
+    for (let h = 0; h < num; h++) {
+        let ran = Math.floor(Math.random() * arr.length);
+        let ranVal = arr[ran];
+        while (arrValNum3(y12Arr, ranVal)) {
+            ran = Math.floor(Math.random() * arr.length);
+            ranVal = arr[ran];
+        }
+        arrpush.push(arr.splice(ran, 1)[0]);
     }
 }
