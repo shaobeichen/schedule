@@ -111,7 +111,7 @@ function arrValNum3(arr, val) {
 }
 
 /**
- * 除去夜班人上过3次的人然后分配到数组里
+ * yb(夜班) 除去夜班人上过3次的人然后分配到数组里
  * @param num 循环几次，即arr1[i][j]
  * @param arr 可以分配的人数组
  * @param arrpush 需要分配到里面的数组
@@ -126,5 +126,39 @@ function yb(num, arr, arrpush, y12Arr) {
             ranVal = arr[ran];
         }
         arrpush.push(arr.splice(ran, 1)[0]);
+    }
+}
+
+/**
+ * 除去休息过的人然后分配到数组里
+ * @param num 循环几次，即arr1[i][j]
+ * @param arr 可以分配的人数组
+ * @param arrpush 需要分配到里面的数组
+ * @param xxArr 休息过的人
+ */
+function xxed(num, arr, arrpush, xxArr) {
+    for (let k = 0; k < num; k++) {
+        let ran = Math.floor(Math.random() * arr.length);
+        let ranVal = arr[ran];
+        while (isInArray(xxArr, ranVal)) {
+            ran = Math.floor(Math.random() * arr.length);
+            ranVal = arr[ran];
+        }
+        arrpush.push(arr.splice(ran, 1)[0]);
+    }
+}
+
+/**
+ * 显示到表格中去
+ * @param eq1 tr的第几行
+ * @param eq2 td的第几列
+ * @param html1
+ */
+function htmltable(eq1, eq2, html1) {
+    let html = $('#table2 tbody').find('tr').eq(eq1).find('td').eq(eq2).html();
+    if (html) {
+        $('#table2 tbody').find('tr').eq(eq1).find('td').eq(eq2).html(`${html},${html1}`);
+    } else {
+        $('#table2 tbody').find('tr').eq(eq1).find('td').eq(eq2).html(`${html1}`);
     }
 }
