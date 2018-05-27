@@ -99,7 +99,7 @@ function deepClone(obj) {
 function arrValNum3(arr, val) {
     let count = 0;
     for (var i = 0; i < arr.length; i++) {
-        if (arr[i] == val) {
+        if (arr[i] === val) {
             count++;
         }
     }
