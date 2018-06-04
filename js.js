@@ -114,10 +114,10 @@ function arrValNum3(arr, val) {
  * yb(夜班) 除去夜班人上过3次的人然后分配到数组里
  * @param num 循环几次，即arr1[i][j]
  * @param arr 可以分配的人数组
- * @param arrpush 需要分配到里面的数组
  * @param y12Arr 夜班上过3次的人
  */
-function yb(num, arr, arrpush, y12Arr) {
+function yb(num, arr, y12Arr) {
+    let arrpush = [];
     for (let h = 0; h < num; h++) {
         let ran = Math.floor(Math.random() * arr.length);
         let ranVal = arr[ran];
@@ -127,16 +127,17 @@ function yb(num, arr, arrpush, y12Arr) {
         }
         arrpush.push(arr.splice(ran, 1)[0]);
     }
+    return arrpush;
 }
 
 /**
  * 除去休息过的人然后分配到数组里
  * @param num 循环几次，即arr1[i][j]
  * @param arr 可以分配的人数组
- * @param arrpush 需要分配到里面的数组
  * @param xxArr 休息过的人
  */
-function xxed(num, arr, arrpush, xxArr) {
+function xxed(num, arr, xxArr) {
+    let arrpush = [];
     for (let k = 0; k < num; k++) {
         let ran = Math.floor(Math.random() * arr.length);
         let ranVal = arr[ran];
@@ -146,6 +147,7 @@ function xxed(num, arr, arrpush, xxArr) {
         }
         arrpush.push(arr.splice(ran, 1)[0]);
     }
+    return arrpush;
 }
 
 /**

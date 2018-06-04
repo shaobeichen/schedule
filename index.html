@@ -405,7 +405,6 @@
                                 _peopleTotalArr5.remove(aa[x]);
                             }
                             // todo 现在采用每次休息人记录到XXArr中，然后每天分配时，然后从xxArr中拷贝数组，从拷贝数组中分配掉，这样就会优先分配休息过的，剩下的就可以正常休息了
-                            // todo 这里也需要yb夜班判断
                             let aaTemp = [];
                             aaTemp = [...aa, ...getArrayItems(_peopleTotalArr5, arr1[i][j] - aa.length)];
                             aa = [];
@@ -429,6 +428,7 @@
                         for (let y = 0; y < aa.length; y++) {
                             _peopleTotalArr3.remove(aa[y]);
                         }
+                        console.log(aa)
 
                     } else {
                         //如果还剩休息过的人，也就是在正0里面没分配完的,需要在下面的班里面给分配完
@@ -442,14 +442,21 @@
                                 _peopleTotalArr3.remove(aa[x]);
                             }
 
-                            // todo 检查XXArr的值是否接受正确
-                            let aaTemp = [];
-                            let ybTemp = [];
-                            yb((arr1[i][j] - aa.length), _peopleTotalArr3, ybTemp, y12Arr);
-                            console.log(`${y12Arr}----------------${ybTemp}`)
-                            aaTemp = [...aa, ...ybTemp];
-                            aa = [];
-                            aa = [...aaTemp];
+                            if (j === 2 || j === 3) {
+                                let aaTemp = [];
+                                let ybTemp = yb((arr1[i][j] - aa.length), _peopleTotalArr3, y12Arr);
+                                console.log(`${arr1[i][j]}------------${y12Arr}---------------${ybTemp}`);
+                                aaTemp = [...aa, ...ybTemp];
+                                aa = [];
+                                aa = [...aaTemp];
+                            } else {
+                                let aaTemp = [];
+                                aaTemp = [...aa, ...getArrayItems(_peopleTotalArr3, arr1[i][j] - aa.length)];
+                                aa = [];
+                                aa = [...aaTemp];
+                            }
+                            console.log(aa)
+
                         } else {
                             let xxArrTempRemove = [];
                             for (let k = 0; k < arr1[i][j]; k++) {
