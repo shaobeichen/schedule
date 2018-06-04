@@ -405,6 +405,7 @@
                                 _peopleTotalArr5.remove(aa[x]);
                             }
                             // todo 现在采用每次休息人记录到XXArr中，然后每天分配时，然后从xxArr中拷贝数组，从拷贝数组中分配掉，这样就会优先分配休息过的，剩下的就可以正常休息了
+                            // todo 目前已经将XXArr的值赋值给XXArrTemp 这样就是从总休息人数数组里面进行分配了
                             let aaTemp = [];
                             aaTemp = [...aa, ...getArrayItems(_peopleTotalArr5, arr1[i][j] - aa.length)];
                             aa = [];
@@ -474,12 +475,13 @@
                         if (j === 3) {
                             htmltable(i, 5, _peopleTotalArr3);
                             //console.log(_peopleTotalArr3);
-                            xxArr = [..._peopleTotalArr3];//休息人总数组，用来记录已经休息的人，保证每个人都是至少休息一次
+                            let t = [...xxArr, ..._peopleTotalArr3];
+                            xxArr = [...t];//休息人总数组，用来记录已经休息的人，保证每个人都是至少休息一次
                             xxArrTemp = [...xxArr];
                         }
 
                         if (i === (arr1.length - 1) && j === 3) {//将最后一天的最后一个上夜2班的人找出来显示
-                            tArr4 = aa;
+                            tArr4 = [...aa];
                             let html2 = $('#tArr4').html();
                             if (html2) {
                                 $('#tArr4').html(`${html2},${tArr4}`);
