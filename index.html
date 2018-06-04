@@ -405,6 +405,7 @@
                                 _peopleTotalArr5.remove(aa[x]);
                             }
                             // todo 现在采用每次休息人记录到XXArr中，然后每天分配时，然后从xxArr中拷贝数组，从拷贝数组中分配掉，这样就会优先分配休息过的，剩下的就可以正常休息了
+                            // todo 这里也需要yb夜班判断
                             let aaTemp = [];
                             aaTemp = [...aa, ...getArrayItems(_peopleTotalArr5, arr1[i][j] - aa.length)];
                             aa = [];
@@ -445,6 +446,7 @@
                             let aaTemp = [];
                             let ybTemp = [];
                             yb((arr1[i][j] - aa.length), _peopleTotalArr3, ybTemp, y12Arr);
+                            console.log(`${y12Arr}----------------${ybTemp}`)
                             aaTemp = [...aa, ...ybTemp];
                             aa = [];
                             aa = [...aaTemp];
@@ -478,13 +480,13 @@
                                 $('#tArr4').html(`${tArr4}`);
                             }
                         }
-
                         if (j === 2 || j === 3) {//如果是夜班，就把人添加到数组里面去
                             let temp = [...y12Arr, ...aa];
                             y12Arr = [];
                             y12Arr = [...temp];
                         }
                     }
+
 
                 }
 
