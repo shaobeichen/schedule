@@ -371,7 +371,6 @@
                     //如果是第一天的夜2班，将剩下的人填到表格里去
                     if (j === 3) {
                         htmltable(i, 5, _peopleTotalArr);
-
                         //console.log(_peopleTotalArr);
                         tArr3 = [...a];//将每次夜2班的人填到数组中，用来在后一天判断不分配到正0里面去
                         xxArr = [..._peopleTotalArr];//休息人总数组，用来记录已经休息的人，保证每个人都是至少休息一次
@@ -392,9 +391,7 @@
                         //移除上一个夜2班的人
 
                         if (arr1[i][j] >= xxArrTemp.length) {//如果今天这个班需要的人数大于前一天休息的人数，那么就直接把休息人分配进去就行了，反之往下一个班分配
-                            for (let k = 0; k < xxArrTemp.length; k++) {
-                                aa.push(xxArrTemp[k]);
-                            }
+                            aa = getArrayItems(xxArrTemp, xxArrTemp.length);
                             xxArrTemp = [];//如果分配完了就直接清空就是了
                             //去除掉上夜2班的人
                             for (let x = 0; x < y2.length; x++) {
@@ -414,8 +411,8 @@
                         } else {
                             //如果这个班需要的人小于前一天休息的人数，那就直接分配掉，然后XXArrTemp删除刚才分配掉的人，这时候里面肯定是还有人的，放在下一个班分配
                             let xxArrTempRemove = [];
+                            aa = getArrayItems(xxArrTemp, arr1[i][j]);
                             for (let k = 0; k < arr1[i][j]; k++) {
-                                aa.push(xxArrTemp[k]);
                                 xxArrTempRemove.push(xxArrTemp[k]);
                             }
                             for (let k = 0; k < arr1[i][j]; k++) {
@@ -429,14 +426,11 @@
                         for (let y = 0; y < aa.length; y++) {
                             _peopleTotalArr3.remove(aa[y]);
                         }
-                        console.log(aa)
 
                     } else {
                         //如果还剩休息过的人，也就是在正0里面没分配完的,需要在下面的班里面给分配完
                         if (arr1[i][j] >= xxArrTemp.length) {
-                            for (let k = 0; k < xxArrTemp.length; k++) {
-                                aa.push(xxArrTemp[k]);
-                            }
+                            aa = getArrayItems(xxArrTemp, xxArrTemp.length);
                             xxArrTemp = [];
                             //去除掉已经分配的人
                             for (let x = 0; x < aa.length; x++) {
@@ -446,7 +440,6 @@
                             if (j === 2 || j === 3) {
                                 let aaTemp = [];
                                 let ybTemp = yb((arr1[i][j] - aa.length), _peopleTotalArr3, y12Arr);
-                                console.log(`${arr1[i][j]}------------${y12Arr}---------------${ybTemp}`);
                                 aaTemp = [...aa, ...ybTemp];
                                 aa = [];
                                 aa = [...aaTemp];
@@ -456,12 +449,11 @@
                                 aa = [];
                                 aa = [...aaTemp];
                             }
-                            console.log(aa)
 
                         } else {
                             let xxArrTempRemove = [];
+                            aa = getArrayItems(xxArrTemp, arr1[i][j]);
                             for (let k = 0; k < arr1[i][j]; k++) {
-                                aa.push(xxArrTemp[k]);
                                 xxArrTempRemove.push(xxArrTemp[k]);
                             }
                             for (let k = 0; k < arr1[i][j]; k++) {
@@ -491,13 +483,14 @@
                         }
                         if (j === 2 || j === 3) {//如果是夜班，就把人添加到数组里面去
                             let temp = [...y12Arr, ...aa];
-                            y12Arr = [];
-                            y12Arr = [...temp];
+                            // y12Arr = [];
+                            // y12Arr = [...temp];
                         }
                     }
 
 
                 }
+                console.log(`${xxArrTemp}--------------${xxArr}`);
 
             }
         }
