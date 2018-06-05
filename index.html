@@ -391,6 +391,7 @@
                         //移除上一个夜2班的人
 
                         if (arr1[i][j] >= xxArrTemp.length) {//如果今天这个班需要的人数大于前一天休息的人数，那么就直接把休息人分配进去就行了，反之往下一个班分配
+                            console.log(xxArrTemp+"+++++++++++++++++++++")
                             aa = getArrayItems(xxArrTemp, xxArrTemp.length);
                             xxArrTemp = [];//如果分配完了就直接清空就是了
                             //去除掉上夜2班的人
@@ -428,6 +429,7 @@
                         }
 
                     } else {
+                        // todo 这里的XXArrTemp 不正确 2018/06/05
                         //如果还剩休息过的人，也就是在正0里面没分配完的,需要在下面的班里面给分配完
                         if (arr1[i][j] >= xxArrTemp.length) {
                             aa = getArrayItems(xxArrTemp, xxArrTemp.length);
@@ -483,9 +485,8 @@
                         }
                         if (j === 2 || j === 3) {//如果是夜班，就把人添加到数组里面去
                             let temp = [...y12Arr, ...aa];
-                            y12Arr = [];
-                            y12Arr = [...temp];
-                            // todo 修复了XXArr的判断，但是y12arr的判断还是出现错误
+                            // y12Arr = [];
+                            // y12Arr = [...temp];
                         }
                     }
 

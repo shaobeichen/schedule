@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c4089a40-f87b-4d48-8419-f8d07de5c6d4" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -19,8 +20,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="651">
-              <caret line="487" column="65" selection-start-line="487" selection-start-column="65" selection-end-line="487" selection-end-column="65" />
+            <state relative-caret-position="404">
+              <caret line="431" column="59" lean-forward="true" selection-start-line="431" selection-start-column="59" selection-end-line="431" selection-end-column="59" />
               <folding>
                 <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
               </folding>
@@ -28,24 +29,32 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="js.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="594">
-              <caret line="143" column="21" selection-start-line="143" selection-start-column="21" selection-end-line="143" selection-end-column="21" />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
       <find>xxArrTemp</find>
       <find>console</find>
+      <find>给自有域名的github-page上HTTPS</find>
+      <find>&lt;/p&gt;</find>
+      <find>&lt;code&gt;</find>
+      <find>&lt;/code&gt;</find>
+      <find>&lt;img src=&quot;</find>
+      <find>&lt;/h3&gt;</find>
+      <find>&lt;/h4&gt;</find>
+      <find>&lt;/h2&gt;</find>
     </findStrings>
     <replaceStrings>
       <replace>//console</replace>
+      <replace>`</replace>
+      <replace>`![](</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -55,6 +64,9 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/js.js" />
+        <option value="$PROJECT_DIR$/s.html" />
+        <option value="$PROJECT_DIR$/a.html" />
+        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/index.html" />
       </list>
     </option>
@@ -93,8 +105,9 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../blog" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RunDashboard">
@@ -123,6 +136,8 @@
       <workItem from="1527211344096" duration="10663000" />
       <workItem from="1527470335555" duration="875000" />
       <workItem from="1528094028158" duration="13017000" />
+      <workItem from="1528182023780" duration="4294000" />
+      <workItem from="1528192818850" duration="824000" />
     </task>
     <task id="LOCAL-00001" summary="重构ing">
       <created>1527155153322</created>
@@ -170,7 +185,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="35466000" />
+    <option name="totallyTimeSpent" value="40584000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -185,7 +200,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24973656" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24973656" />
       <window_info anchor="bottom" id="TODO" order="10" weight="0.3293348" />
       <window_info anchor="bottom" id="Docker" order="6" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" weight="0.3293348" />
@@ -221,6 +236,33 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="10227">
+          <caret line="487" column="65" selection-start-line="487" selection-start-column="65" selection-end-line="487" selection-end-column="65" />
+          <folding>
+            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="10227">
+          <caret line="487" column="65" selection-start-line="487" selection-start-column="65" selection-end-line="487" selection-end-column="65" />
+          <folding>
+            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3003">
+          <caret line="143" column="21" selection-start-line="143" selection-start-column="21" selection-end-line="143" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="8148">
@@ -260,15 +302,27 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="594">
+        <state relative-caret-position="279">
           <caret line="143" column="21" selection-start-line="143" selection-start-column="21" selection-end-line="143" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/s.html" />
+    <entry file="file://$PROJECT_DIR$/a.html" />
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor>
+            <caret column="10" lean-forward="true" selection-end-column="10" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="651">
-          <caret line="487" column="65" selection-start-line="487" selection-start-column="65" selection-end-line="487" selection-end-column="65" />
+        <state relative-caret-position="404">
+          <caret line="431" column="59" lean-forward="true" selection-start-line="431" selection-start-column="59" selection-end-line="431" selection-end-column="59" />
           <folding>
             <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
           </folding>
