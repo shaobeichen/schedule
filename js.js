@@ -164,3 +164,32 @@ function htmltable(eq1, eq2, html1) {
         $('#table2 tbody').find('tr').eq(eq1).find('td').eq(eq2).html(`${html1}`);
     }
 }
+
+/**
+ * 去重
+ * @param 去重前的数组
+ * @returns 去重后的数组
+ */
+function rmDup(arr) {
+    return Array.from(new Set(arr));
+}
+
+/**
+ * 判断去重后的夜班人是否已经被分配掉了
+ * @param arr
+ * @param parr
+ * @returns {Array}
+ */
+function rmDupy12ArrFun(arr, parr) {
+    let arrpush = [];
+    for (let k = 0; k < arr.length; k++) {
+        let ran = Math.floor(Math.random() * arr.length);
+        let ranVal = arr[ran];
+        while (isInArray(parr, ranVal)) {
+            ran = Math.floor(Math.random() * arr.length);
+            ranVal = arr[ran];
+        }
+        arrpush.push(arr.splice(ran, 1)[0]);
+    }
+    return arrpush;
+}

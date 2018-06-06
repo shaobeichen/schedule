@@ -391,7 +391,6 @@
                         //移除上一个夜2班的人
 
                         if (arr1[i][j] >= xxArrTemp.length) {//如果今天这个班需要的人数大于前一天休息的人数，那么就直接把休息人分配进去就行了，反之往下一个班分配
-                            console.log(xxArrTemp+"+++++++++++++++++++++")
                             aa = getArrayItems(xxArrTemp, xxArrTemp.length);
                             xxArrTemp = [];//如果分配完了就直接清空就是了
                             //去除掉上夜2班的人
@@ -402,8 +401,12 @@
                             for (let x = 0; x < aa.length; x++) {
                                 _peopleTotalArr5.remove(aa[x]);
                             }
-                            // todo 现在采用每次休息人记录到XXArr中，然后每天分配时，然后从xxArr中拷贝数组，从拷贝数组中分配掉，这样就会优先分配休息过的，剩下的就可以正常休息了
-                            // todo 目前已经将XXArr的值赋值给XXArrTemp 这样就是从总休息人数数组里面进行分配了
+                            // 现在采用每次休息人记录到XXArr中，然后每天分配时，然后从xxArr中拷贝数组，从拷贝数组中分配掉，这样就会优先分配休息过的，剩下的就可以正常休息了
+                            // 目前已经将XXArr的值赋值给XXArrTemp 这样就是从总休息人数数组里面进行分配了
+
+                            var rmDupy12Arr = rmDup(y12Arr);
+                            console.log(rmDupy12ArrFun(rmDupy12Arr,_peopleTotalArr5));
+
                             let aaTemp = [];
                             aaTemp = [...aa, ...getArrayItems(_peopleTotalArr5, arr1[i][j] - aa.length)];
                             aa = [];
@@ -492,7 +495,7 @@
 
 
                 }
-                console.log(`${xxArrTemp}--------------${xxArr}`);
+                // console.log(`${xxArrTemp}--------------${xxArr}`);
 
             }
         }
