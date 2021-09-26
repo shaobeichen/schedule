@@ -77,10 +77,10 @@ export default {
       
       `,
       total: 30,
-      statusType: ['z0', 'z2', 'y1', 'y2', 'xx'],
       quantity:
-        '8,4,4,8,6,9,5,4,10,2,9,5,4,10,2,9,5,4,10,2,8,5,3,9,5,8,4,3,9,6,8,4,3,9,6',
-      theadTitle: ['正0班', '正2班', '夜1班', '夜2班', '休息班'],
+        '6,4,8,8,4,3,4,10,9,4,3,4,10,9,4,2,4,10,9,5,5,3,9,8,5,6,3,9,8,4,6,3,9,8,4',
+      statusType: ['xx', 'y1', 'y2', 'z0', 'z2'],
+      theadTitle: ['休息班', '夜1班', '夜2班', '正0班', '正2班'],
       tbodyTitle: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
       classData: [],
       endList: [],
@@ -95,34 +95,79 @@ export default {
     },
     /**
      * 拆分后每班人数
-     * 格式: [[8,4,4,8,9],[5,4,10,9,5]...]
+     * 格式: [[6,4,8,8,4],[2,4,10,9,5]...]
      */
     chunkQuantity() {
       const { quantity } = this
       return this.chunk(quantity.split(',').map(Number), 5)
     },
   },
-  mounted() {
-    this.classData = JSON.parse(JSON.stringify(this.getBaseClassData()))
-  },
   methods: {
+    init() {
+      this.classData = this.deepClone(this.getBaseClassData())
+      this.endList = []
+    },
     ok() {
+      this.init()
       const { chunkQuantity, total, random, statusType, classData, quantity } =
         this
 
-      const classDataTemp = JSON.parse(JSON.stringify(classData))
+      const classDataTemp = this.deepClone(classData)
 
+      // 最终展示在表格列表的数据
       const endList = []
+      // 休息班的总数据
+      let xxList = []
+      // 夜2班的总数据，用来在第二天正0班比对上一天的数据
+      let y2List = []
+
       chunkQuantity.forEach((item, i) => {
-        console.log(`第${i + 1}天`)
+        // 表示哪些已经分配过了
         let arr = []
+
         item.forEach((ite, j) => {
           const key = statusType[j]
           let idArr = []
 
+          // 添加限制 每人每周 休息班>=1
+          if (key === statusType[0] && xxList.length <= total) {
+            let arrAndXxList = this.deepClone(arr)
+            arrAndXxList.push(...xxList)
+            arrAndXxList = Array.from(new Set(arrAndXxList))
+
+            // 有可能会出现已分配人数超过需要分配人数 比如休息的人数这周已经25个人了，但是现在最后一周的休息班需要分配6人
+            const allocatedQuantity = total - arrAndXxList.length
+            if (allocatedQuantity < ite) {
+              idArr = random(allocatedQuantity, total, arrAndXxList)
+              idArr.push(
+                ...random(ite - allocatedQuantity, total, arrAndXxList),
+              )
+            } else {
+              idArr = random(ite, total, arrAndXxList)
+            }
+          }
+
+          // 添加限制 前一天夜2班的人员不会安排到后一天正0里面
+          else if (key === statusType[3] && y2List.length) {
+            let arrAndY2YesterdayList = this.deepClone(arr)
+            const y2YesterdayList = y2List[i - 1 < 0 ? 0 : i - 1] || []
+            console.log(111, ite, total, y2YesterdayList)
+            debugger
+            // TODO 这里随机分配有问题
+            arrAndY2YesterdayList.push(...y2YesterdayList)
+
+            arrAndY2YesterdayList = Array.from(new Set(arrAndY2YesterdayList))
+            idArr = random(ite, total, arrAndY2YesterdayList)
+
+            console.log(
+              '比对',
+              y2YesterdayList.filter((x) => new Set(idArr).has(x)),
+            )
+          }
+
           // 添加限制 每人每周 夜1班和夜2班次数<=3
-          if (key === statusType[2] || key === statusType[3]) {
-            let arrAndClassDataTemp = JSON.parse(JSON.stringify(arr))
+          else if (key === statusType[1] || key === statusType[2]) {
+            let arrAndClassDataTemp = this.deepClone(arr)
             arrAndClassDataTemp.push(
               ...classDataTemp
                 .filter((v) => +v.y1 + +v.y2 > 3)
@@ -130,7 +175,10 @@ export default {
             )
             arrAndClassDataTemp = Array.from(new Set(arrAndClassDataTemp))
             idArr = random(ite, total, arrAndClassDataTemp)
-          } else {
+          }
+
+          // 正常随机分配
+          else {
             arr = Array.from(new Set(arr))
             idArr = random(ite, total, arr)
           }
@@ -142,11 +190,22 @@ export default {
             }
           }
 
+          // 将当天夜2班的人存起来
+          if (key === statusType[2]) {
+            y2List[i] = [...idArr]
+          }
+
           arr.push(...idArr)
           endList.push(...idArr)
         })
+
+        // 分配完每天的数据后统计下之前的休息班数据
+        xxList = [
+          ...classDataTemp
+            .filter((v) => +v.xx > 1 || +v.xx === 1)
+            .map((v) => v.id),
+        ]
       })
-      console.log('end', endList)
 
       this.classData = classDataTemp
       this.endList = quantity
@@ -195,7 +254,7 @@ export default {
      * @param {Array} exclude 排除
      */
     random(number = 1, max = 1, exclude = []) {
-      exclude = JSON.parse(JSON.stringify(exclude))
+      exclude = this.deepClone(exclude)
       const arr = []
       while (arr.length < number) {
         const num = Math.ceil(Math.random() * max)
@@ -205,6 +264,12 @@ export default {
         }
       }
       return arr
+    },
+    /**
+     * 深拷贝（局限）
+     */
+    deepClone(value) {
+      return JSON.parse(JSON.stringify(value))
     },
   },
 }
