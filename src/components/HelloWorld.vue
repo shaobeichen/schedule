@@ -128,6 +128,7 @@ export default {
         item.forEach((ite, j) => {
           const key = statusType[j]
           let idArr = []
+          const y2YesterdayList = y2List[i - 1] || []
 
           // 添加限制 每人每周 休息班>=1
           if (key === statusType[0] && xxList.length <= total) {
@@ -148,18 +149,15 @@ export default {
           }
 
           // 添加限制 前一天夜2班的人员不会安排到后一天正0里面
-          else if (key === statusType[3] && y2List.length) {
+          else if (key === statusType[3] && y2YesterdayList.length) {
             let arrAndY2YesterdayList = this.deepClone(arr)
-            const y2YesterdayList = y2List[i - 1 < 0 ? 0 : i - 1] || []
-            console.log(111, ite, total, y2YesterdayList)
-            debugger
-            // TODO 这里随机分配有问题
             arrAndY2YesterdayList.push(...y2YesterdayList)
 
             arrAndY2YesterdayList = Array.from(new Set(arrAndY2YesterdayList))
+            // TODO 这里随机分配有问题
+            console.warn(`第${i + 1}天`, ite, total, y2YesterdayList)
             idArr = random(ite, total, arrAndY2YesterdayList)
-
-            console.log(
+            console.warn(
               '比对',
               y2YesterdayList.filter((x) => new Set(idArr).has(x)),
             )
@@ -252,16 +250,18 @@ export default {
      * @param {Number} number 要生成的数量
      * @param {Number} max 最大数
      * @param {Array} exclude 排除
+     * TODO 这里有性能问题，如果max很大的话（比如10000），同时number已经生成9999了，那么while循环会执行很久才可能命中
      */
     random(number = 1, max = 1, exclude = []) {
-      exclude = this.deepClone(exclude)
+      const _exclude = this.deepClone(exclude)
       const arr = []
       while (arr.length < number) {
         const num = Math.ceil(Math.random() * max)
-        if (!exclude.includes(num)) {
+        if (!_exclude.includes(num)) {
           arr.push(num)
-          exclude.push(num)
+          _exclude.push(num)
         }
+        if (_exclude.length === max) break
       }
       return arr
     },
