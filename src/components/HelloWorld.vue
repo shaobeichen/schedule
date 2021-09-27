@@ -250,18 +250,26 @@ export default {
      * @param {Number} number 要生成的数量
      * @param {Number} max 最大数
      * @param {Array} exclude 排除
-     * TODO 这里有性能问题，如果max很大的话（比如10000），同时number已经生成9999了，那么while循环会执行很久才可能命中
      */
     random(number = 1, max = 1, exclude = []) {
-      const _exclude = this.deepClone(exclude)
       const arr = []
+
+      let totalArr = Array.from(Array(max), (v, i) => i + 1)
+
+      exclude.map((v) =>
+        totalArr.splice(
+          totalArr.findIndex((x) => x === v),
+          1,
+        ),
+      )
+
       while (arr.length < number) {
-        const num = Math.ceil(Math.random() * max)
-        if (!_exclude.includes(num)) {
-          arr.push(num)
-          _exclude.push(num)
-        }
-        if (_exclude.length === max) break
+        const num = Math.ceil(Math.random() * (totalArr.length - 1))
+
+        arr.push(totalArr[num])
+
+        totalArr.splice(num, 1)
+        if (arr.length === max) break
       }
       return arr
     },
