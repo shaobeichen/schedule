@@ -147,6 +147,10 @@ export default {
       this.classData = this.deepClone(this.getBaseClassData())
       this.endList = []
     },
+    /**
+     * 生成排班
+     * TODO 目前夜班数据不正确，最后一天的夜1班也有问题
+     */
     ok() {
       this.init()
       const { chunkQuantity, total, random, statusType, classData, quantity } =
@@ -287,7 +291,7 @@ export default {
      * @param {Array} exclude 排除
      */
     random(number = 1, max = 1, exclude = [], i, j) {
-      if (max - exclude.length < number)
+      if (max - exclude.length < number) {
         console.warn(
           '警告 exclude 数据不正确',
           i,
@@ -296,6 +300,8 @@ export default {
           max,
           exclude.length,
         )
+        debugger
+      }
 
       const arr = []
 
